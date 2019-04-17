@@ -1,5 +1,7 @@
 *.iml
 .gradle
+/idea/
+/gradle/
 *.gradle
 .gradle/
 .class
