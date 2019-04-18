@@ -11,6 +11,8 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -26,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
         Button button3 = (Button) findViewById(R.id.button4);
         Button button4 = (Button) findViewById(R.id.button5);
         setSupportActionBar(toolbar);
+
+        final TextView txt;
+        txt = (TextView)findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                txt.setText("Toast");
+            }
+        });
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -57,5 +68,11 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void sendMessage(View view) {
+        TextView txt;
+        // txt = (TextView) findViewById(R.id.button2);
+
     }
 }
