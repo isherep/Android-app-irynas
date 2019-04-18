@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -16,6 +18,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        TextView label = (TextView) findViewById(R.id.editText);
+
+        Button button = (Button) findViewById(R.id.button);
+        Button button1 = (Button) findViewById(R.id.button2);
+        Button button2 = (Button) findViewById(R.id.button3);
+        Button button3 = (Button) findViewById(R.id.button4);
+        Button button4 = (Button) findViewById(R.id.button5);
         setSupportActionBar(toolbar);
 
         FloatingActionButton fab = findViewById(R.id.fab);
