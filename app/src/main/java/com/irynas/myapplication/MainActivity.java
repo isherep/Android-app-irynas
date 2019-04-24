@@ -54,20 +54,22 @@ public class MainActivity extends AppCompatActivity {
         TextView label = (TextView) findViewById(R.id.editText);
 
         Button button = (Button) findViewById(R.id.button);
-        Button button1 = (Button) findViewById(R.id.button2);
-        final Button button2 = (Button) findViewById(R.id.button3);
-        Button button3 = (Button) findViewById(R.id.button4);
-        Button button4 = (Button) findViewById(R.id.button5);
+        Button button2 = (Button) findViewById(R.id.button2);
+        Button button3 = (Button) findViewById(R.id.button3);
+        Button button4 = (Button) findViewById(R.id.button4);
+        Button button5 = (Button) findViewById(R.id.button5);
         setSupportActionBar(toolbar);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //display list of movies on click
-                button2.setl
+                setContentView(R.layout.list_view_items);
+               Intent intent = new Intent(MainActivity.this, ListViewItemsActivity.class);
+                startActivity(intent);
             }
         });
-
+        /*
         final TextView txt;
         txt = (TextView)findViewById(R.id.button2);
         button2.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 txt.setText("Toast");
             }
-        });
+        });*/
 
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
