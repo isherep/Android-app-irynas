@@ -49,7 +49,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText"
-        android:onClick="sendMessage"/>
+        android:onClick="displayMovieList"/>
 
     <Button
         android:id="@+id/button3"
