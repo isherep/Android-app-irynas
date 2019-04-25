@@ -96,9 +96,14 @@ public class MainActivity extends AppCompatActivity {
         //context - the reference of current class
         //resource id - used to set the layout(xml file) for list items in which you have a text view.
         //example
-        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies[0]);
+        for(int i = 0; i< movies.length; i++) {
+            ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies[0]);
+        }
     }
 
+    public String[][] getMovies(){
+        return this.movies;
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
