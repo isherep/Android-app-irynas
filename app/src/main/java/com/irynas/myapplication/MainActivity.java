@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
                 //display list of movies on click
                 setContentView(R.layout.list_view_items);
                Intent intent = new Intent(MainActivity.this, ListViewItemsActivity.class);
+               
                 startActivity(intent);
             }
         });
@@ -97,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
         //resource id - used to set the layout(xml file) for list items in which you have a text view.
         //example
         for(int i = 0; i< movies.length; i++) {
-            ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies[0]);
+            ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies[0]);
         }
     }
 

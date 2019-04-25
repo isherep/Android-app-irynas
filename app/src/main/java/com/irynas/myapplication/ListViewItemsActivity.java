@@ -13,13 +13,10 @@ public class ListViewItemsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view_items);
-        displayMovieList(5);
-
-
-
+        displayMovieList();
     }
 
-    public void displayMovieList(View view){
+    public void displayMovieList(){
 
         //ListView simpleList;
        // simpleList = (ListView)findViewById(R.id.list_view_items);
@@ -32,8 +29,9 @@ public class ListViewItemsActivity extends AppCompatActivity {
         MainActivity m = new MainActivity();
         String[][] movies = m.getMovies();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies);
-        ListView listView = (ListView) findViewById(R.layout.list_view_items);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_view_items, R.id.textView, movies[0]);
+       // ListView listView = (ListView) findViewById(R.id.list_view_item);
+        ListView listView = (ListView) findViewById(R.id.list_view);
         listView.setAdapter(arrayAdapter);
         //somelist.setAdapter
 
