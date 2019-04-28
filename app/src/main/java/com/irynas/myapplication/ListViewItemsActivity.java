@@ -14,6 +14,11 @@ public class ListViewItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.list_view_items);
         displayMovieList();
+
+        ArrayAdapter<String> adapter = new ZombieAdapter(this);
+
+        ListView listView = (ListView)findViewById(R.id.listview);
+        listView.setAdapter(adapter);
     }
 
     public void displayMovieList(){
@@ -26,13 +31,13 @@ public class ListViewItemsActivity extends AppCompatActivity {
         //context - the reference of current class
         //resource id - used to set the layout(xml file) for list items in which you have a text view.
         //example
-        MainActivity m = new MainActivity();
-        String[][] movies = m.getMovies();
+        //MainActivity m = new MainActivity();
+        //String[][] movies = m.getMovies();
 
-        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_view_items, R.id.textView, movies[0]);
+        //ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this, R.layout.list_view_items, R.id.textView, movies[0]);
        // ListView listView = (ListView) findViewById(R.id.list_view_item);
         ListView listView = (ListView) findViewById(R.id.list_view);
-        listView.setAdapter(arrayAdapter);
+        //listView.setAdapter(arrayAdapter);
         //somelist.setAdapter
 
 
