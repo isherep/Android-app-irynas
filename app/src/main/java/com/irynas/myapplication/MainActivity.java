@@ -51,16 +51,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
        Button button2 = (Button) findViewById(R.id.button2);
 
-//
         button2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                         public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), ListViewItemsActivity.class);
-
                     startActivity(intent);
                 }
         });
@@ -86,21 +83,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void displayMovieList(View view){
-
-        //Intent startNewActivity  = new Intent(this, DisplayMessageAcrivity.class)
-        //ArrayAdapter(Context context, int resource, int textViewResourceId, T[] objects)
-        //context - the reference of current class
-        //resource id - used to set the layout(xml file) for list items in which you have a text view.
-        //example
-//        for(int i = 0; i< movies.length; i++) {
-//            ArrayAdapter<String> arrayAdapter = new ArrayAdapter(this, R.layout.list_view_items, R.id.textView, movies[0]);
-//        }
-    }
-
-//    public String[][] getMovies(){
-//        return this.movies;
-//    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
