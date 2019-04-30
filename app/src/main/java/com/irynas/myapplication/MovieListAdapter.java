@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 public class MovieListAdapter extends ArrayAdapter<String[]> {
 
     public MovieListAdapter(Context context, String[][] movies) {
@@ -21,7 +23,8 @@ public class MovieListAdapter extends ArrayAdapter<String[]> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.movie_list_row_item, parent, false);
         }
-
+        //ImageView imageView = findViewById(R.id.movieImage);
+        //String url = "movies"
 
         String[] movie = getItem(position);
         TextView movieTitle = (TextView) convertView.findViewById(R.id.movieTitle);
@@ -30,8 +33,13 @@ public class MovieListAdapter extends ArrayAdapter<String[]> {
         TextView movieYear = (TextView) convertView.findViewById(R.id.movieYear);
         movieYear.setText(movie[1]);
 
-        ImageView movieImage = (ImageView) convertView.findViewById(R.id.movieImage);
-        movieImage.setImageURI(Uri.parse(movie[3]));
+        //ImageView movieImage = (ImageView) convertView.findViewById(R.id.movieImage);
+        //movieImage.setImageURI(Uri.parse(movie[3]));
+
+        ImageView movieImage = convertView.findViewById(R.id.movieImage);
+        String url = (movie[3]);
+
+        Picasso.get().load(url).into(movieImage);
 
         return convertView;
     }

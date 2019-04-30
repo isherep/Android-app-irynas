@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 public class ListViewItemsActivity extends AppCompatActivity {
@@ -37,6 +38,9 @@ public class ListViewItemsActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
+
+        ImageView imageView = findViewById(R.id.movieImage);
+        //String url = "movies"
 
         MovieListAdapter adapter = new MovieListAdapter(this, movies);
         ListView listView = (ListView)findViewById(R.id.movielist);
