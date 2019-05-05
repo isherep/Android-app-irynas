@@ -33,8 +33,6 @@ public class MovieListAdapter extends ArrayAdapter<String[]> {
         TextView movieYear = (TextView) convertView.findViewById(R.id.movieYear);
         movieYear.setText(movie[1]);
 
-        //ImageView movieImage = (ImageView) convertView.findViewById(R.id.movieImage);
-        //movieImage.setImageURI(Uri.parse(movie[3]));
 
         ImageView movieImage = convertView.findViewById(R.id.movieImage);
         String url = (movie[3]);

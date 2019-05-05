@@ -45,6 +45,8 @@ public class ListViewItemsActivity extends AppCompatActivity {
         MovieListAdapter adapter = new MovieListAdapter(this, movies);
         ListView listView = (ListView)findViewById(R.id.movielist);
         listView.setAdapter(adapter);
+
+        
     }
 
 }
