@@ -5,7 +5,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
-<!-- 'detail' activity that displays  title, year, director, image, and description for the selected item-->
+
+    <!-- 'detail' activity that displays  title, year, director, image, and description for the selected item-->
     <ImageView
 
         android:id="@+id/LargeMovieImage"
@@ -24,7 +25,6 @@
         android:text="TextView"
         android:textSize="25dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
-
 
     <TextView
 
@@ -54,7 +54,6 @@
         android:layout_marginLeft="5dp"
         android:text="TextView"
         android:textSize="13dp"
-
         android:fontFamily="sans-serif-thin"
         android:layout_margin="10dp"
     android:verticalScrollbarPosition="right"

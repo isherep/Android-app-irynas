@@ -33,12 +33,10 @@ public class MovieListAdapter extends ArrayAdapter<String[]> {
         TextView movieYear = (TextView) convertView.findViewById(R.id.movieYear);
         movieYear.setText(movie[1]);
 
-
         ImageView movieImage = convertView.findViewById(R.id.movieImage);
         String url = (movie[3]);
 
         Picasso.get().load(url).into(movieImage);
-
 
         return convertView;
     }

@@ -42,7 +42,6 @@ public class ListViewItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listview);
 
         ImageView imageView = findViewById(R.id.movieImage);
-        //String url = "movies"
 
         MovieListAdapter adapter = new MovieListAdapter(this, movies);
         final ListView listView = (ListView)findViewById(R.id.movielist);
@@ -56,8 +55,8 @@ public class ListViewItemsActivity extends AppCompatActivity {
                 Intent intent = new Intent(ListViewItemsActivity.this, MovieDetailViewActivity.class);
 
                 intent.putExtra("ImageURL", movies[position][3]);
-                intent.putExtra("Title", movies[position][0]);
-                intent.putExtra("Year", movies[position][1]);
+                intent.putExtra("Title",    movies[position][0]);
+                intent.putExtra("Year",     movies[position][1]);
                 intent.putExtra("Director", movies[position][2]);
                 intent.putExtra("Description", movies[position][4]);
 
