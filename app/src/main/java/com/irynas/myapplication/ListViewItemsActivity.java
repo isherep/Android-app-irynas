@@ -1,8 +1,10 @@
 package com.irynas.myapplication;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -43,10 +45,24 @@ public class ListViewItemsActivity extends AppCompatActivity {
         //String url = "movies"
 
         MovieListAdapter adapter = new MovieListAdapter(this, movies);
-        ListView listView = (ListView)findViewById(R.id.movielist);
+        final ListView listView = (ListView)findViewById(R.id.movielist);
         listView.setAdapter(adapter);
 
-        
+        //in.putExtra("Title", value);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //long id - the row of item clicked
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ListViewItemsActivity.this, MovieDetailViewActivity.class);
+
+                //intent.putExtra("movieTitle", listView.getItemIdAtPosition(position));
+                intent.putExtra("Title", movies[position][0]);
+                intent.putExtra("Director", movies[2][0]);
+                intent.putExtra("Description", movies[4][0]);
+
+                startActivity(intent);
+            }
+        });
     }
 
 }

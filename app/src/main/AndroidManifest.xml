@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListViewItemsActivity"></activity>
+        <activity android:name="MovieDetailViewActivity"></activity>
     </application>
 
 </manifest>

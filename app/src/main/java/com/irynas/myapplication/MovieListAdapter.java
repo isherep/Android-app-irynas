@@ -39,6 +39,7 @@ public class MovieListAdapter extends ArrayAdapter<String[]> {
 
         Picasso.get().load(url).into(movieImage);
 
+
         return convertView;
     }
 }
