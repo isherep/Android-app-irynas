@@ -9,18 +9,20 @@
     <ImageView
 
         android:id="@+id/LargeMovieImage"
-        android:layout_width="300dp"
-        android:layout_height="150dp"
+        android:layout_width="370dp"
+        android:layout_height="210dp"
+        android:textAlignment="center"
         android:padding="1dp"
-        android:layout_margin="3dp"
+
         app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
         android:id="@+id/movieTitle"
-        android:layout_width="100dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:layout_marginLeft="10dp"
         android:text="TextView"
+        android:textSize="25dp"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 
@@ -30,25 +32,34 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_above="@+id/textView"
-        android:layout_weight="1"
+        android:layout_marginLeft="10dp"
         android:text="TextView"
         android:layout_marginHorizontal="10dp"
     android:layout_alignParentTop="true"/>
 
     <TextView
         android:id="@+id/movieDirector"
-        android:layout_width="100dp"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
+        android:textSize="17dp"
         android:text="TextView"
+        android:layout_marginLeft="10dp"
+
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
     <TextView
         android:id="@+id/movieDescription"
-        android:layout_width="400dp"
+        android:layout_width="330dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:text="TextView"
+        android:textSize="13dp"
+
+        android:fontFamily="sans-serif-thin"
+        android:layout_margin="10dp"
+    android:verticalScrollbarPosition="right"
+        android:paddingBottom="15dp"
+        android:textAlignment="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title" />
 
 </LinearLayout>

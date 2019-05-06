@@ -55,10 +55,11 @@ public class ListViewItemsActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ListViewItemsActivity.this, MovieDetailViewActivity.class);
 
-                //intent.putExtra("movieTitle", listView.getItemIdAtPosition(position));
+                intent.putExtra("ImageURL", movies[position][3]);
                 intent.putExtra("Title", movies[position][0]);
-                intent.putExtra("Director", movies[2][0]);
-                intent.putExtra("Description", movies[4][0]);
+                intent.putExtra("Year", movies[position][1]);
+                intent.putExtra("Director", movies[position][2]);
+                intent.putExtra("Description", movies[position][4]);
 
                 startActivity(intent);
             }
