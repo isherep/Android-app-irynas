@@ -12,4 +12,9 @@
     <string name="button_drama">Drama</string>
     <string name="button_action">Action</string>
     <string name="button_documentary">Documentary</string>
+    <string name="settings_name">Settings</string>
+    <string name="list_name">Horror Movie List</string>
+    <string name="about_name">About</string>
+    <string name="about_text">About Section</string>
+    <string name="about_page">About Page</string>
 </resources>
