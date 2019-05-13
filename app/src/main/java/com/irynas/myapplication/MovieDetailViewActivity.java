@@ -2,6 +2,7 @@ package com.irynas.myapplication;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.content.Intent;
@@ -10,6 +11,8 @@ import com.squareup.picasso.Picasso;
 
 public class MovieDetailViewActivity extends AppCompatActivity {
 
+    private static final String TAG = "Movie Detail Activity";
+
     //note that you can pass a stringArray intent message
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +20,7 @@ public class MovieDetailViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
         Intent intent = getIntent();
-
+        Log.i(TAG, "started");
         Bundle bundle = getIntent().getExtras();
         //pulling elements values from key on Bundle
         String ImageUrlReceived = bundle.getString("ImageURL");

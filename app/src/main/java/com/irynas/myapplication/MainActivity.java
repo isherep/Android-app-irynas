@@ -26,6 +26,13 @@ public class MainActivity extends AppCompatActivity {
     //Creating the lists of movie names
     //String[] NAMES = {"Night of the Comet", "Dead Snow","Cemetery Man", "28 Weeks Later","Night of the Creeps", "ParaNorman","Zombieland", "Planet Terror", "Train to Busan"};
     //method to your main activity that starts a new activity when the upper-left button is clicked,
+
+    // if Google Play services is required for your app at all times, you might want to do it when your app first launches
+/*
+
+On the other hand, if Google Play services is an optional part of your app,
+you can check the version only once the user navigates to that portion of your app.
+ */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,11 +97,12 @@ public class MainActivity extends AppCompatActivity {
                 Intent aboutIcon = new Intent(this, AboutActivity.class);
                 startActivity(aboutIcon);
                 break;
-
-
+            case R.id.location_icon:
+                Intent locationCameras = new Intent(this, CameraActivity.class);
+                startActivity(locationCameras);
+                break;
 
             default:
-
 
         }
 

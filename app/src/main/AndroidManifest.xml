@@ -28,12 +28,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
+        <!--Adding the  movie list activity-->
         <activity android:name=".ListViewItemsActivity"
             android:parentActivityName=".MainActivity"/>
 
-        
-        <activity android:name="MovieDetailViewActivity"></activity>
+        <!--Adding the movie detail activity-->
+        <activity android:name="MovieDetailViewActivity"
+            android:parentActivityName=".MainActivity"></activity>
+        <!--Adding the traffic cameras activity-->
+        <activity android:name=".CameraActivity"
+            android:parentActivityName=".MainActivity"></activity>
 
     </application>
 

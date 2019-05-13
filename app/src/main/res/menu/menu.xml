@@ -17,6 +17,13 @@
         android:title="@string/about_page"
         app:showAsAction="always">
     </item>
+
+    <item
+        android:id="@+id/location_icon"
+        android:icon="@drawable/baseline_add_location_24px"
+        android:title="@string/about_page"
+        app:showAsAction="always">
+    </item>
     <!--<item
         android:id="@+id/action_settings"
         android:title="@string/settings_name"
