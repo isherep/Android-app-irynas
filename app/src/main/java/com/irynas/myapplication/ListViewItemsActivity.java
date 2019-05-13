@@ -1,10 +1,15 @@
 package com.irynas.myapplication;
 
+
 import android.support.v7.app.ActionBar;
+
+import android.content.Intent;
+
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -42,11 +47,11 @@ public class ListViewItemsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_listview);
 
         ImageView imageView = findViewById(R.id.movieImage);
-        //String url = "movies"
 
         MovieListAdapter adapter = new MovieListAdapter(this, movies);
-        ListView listView = (ListView)findViewById(R.id.movielist);
+        final ListView listView = (ListView)findViewById(R.id.movielist);
         listView.setAdapter(adapter);
+
 
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -54,6 +59,23 @@ public class ListViewItemsActivity extends AppCompatActivity {
 
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
+
+        //in.putExtra("Title", value);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            //long id - the row of item clicked
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(ListViewItemsActivity.this, MovieDetailViewActivity.class);
+
+                intent.putExtra("ImageURL", movies[position][3]);
+                intent.putExtra("Title",    movies[position][0]);
+                intent.putExtra("Year",     movies[position][1]);
+                intent.putExtra("Director", movies[position][2]);
+                intent.putExtra("Description", movies[position][4]);
+
+                startActivity(intent);
+            }
+
     }
 
 }
