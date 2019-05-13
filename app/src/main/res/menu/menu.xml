@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/list_settings"
+        android:title="List Name"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/about_settings"
+        android:title="About Name"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/info_icon"
+        android:icon="@drawable/ic_info"
+        android:title="About page"
+        app:showAsAction="always">
+    </item>
+    <!--<item
+        android:id="@+id/action_settings"
+        android:title="@string/settings_name"
+        app:showAsAction="never">
+    </item>-->
+</menu>
