@@ -15,7 +15,7 @@
 
     <!-- A RecyclerView with some commonly used attributes -->
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
+        android:id="@+id/cameras_recycler_view"
         android:layout_width="384dp"
         android:layout_height="300dp"
         android:layout_marginStart="16dp"
@@ -28,17 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/app_bar" />
 
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="358dp"
-        android:layout_height="268dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginBottom="265dp"
-        android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/my_recycler_view"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar"
-        app:layout_constraintVertical_bias="0.0"
-        tools:layout_editor_absoluteX="23dp" />
+
 
 
 </android.support.constraint.ConstraintLayout>

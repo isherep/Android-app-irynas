@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -57,6 +58,7 @@ public class CameraActivity extends AppCompatActivity {
 
     List<TrafficCam> cams = new ArrayList<TrafficCam>();
 
+    TextView textView = (TextView)findViewById(R.id.description);
 
     //final TextView textView = (TextView) findViewById(R.id.text);
 
@@ -74,28 +76,63 @@ public class CameraActivity extends AppCompatActivity {
         ActionBar ab = getSupportActionBar();
         ab.setDisplayHomeAsUpEnabled(true);
 
+        context = getApplicationContext();
+        //creating recycler view
+        recyclerView = (RecyclerView) findViewById(R.id.cameras_recycler_view);
+        recylerViewLayoutManager = new LinearLayoutManager(context);
 
+        // use a linear layout manager
+        recylerViewLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(recylerViewLayoutManager);
+
+        recyclerViewAdapter = new CameraActivity.CustomAdapter();
+        recyclerView.setAdapter(recyclerViewAdapter);
+        
         String url = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
-/*
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        JsonObjectRequest jsonReq = new JsonObjectRequest
+                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        textView.setText("Response: " + response.toString());
+                        Log.d("CAMERAS", response.toString());
+                        try {
+                            JSONArray features = response.getJSONArray("Features"); // top-level node
+                            //each camera point
+                            for(int i = 1; i < features.length(); i++) {
+                                JSONObject point = features.getJSONObject(i);
+                                JSONArray pointCoords = point.getJSONArray("PointCoordinate");
+                                double[] coords = {pointCoords.getDouble(0), pointCoords.getDouble(1)};
+
+                                // points may have more than one camera
+                                JSONArray cameras = point.getJSONArray("Cameras");
+                                for (int j = 0; j < cameras.length(); j++) {
+                                    JSONObject camera = cameras.getJSONObject(j);
+                                    TrafficCam c = new TrafficCam(
+                                            camera.getString("cameralabel"),
+                                            camera.getString("ImageUrl"),
+                                            camera.getString("Type"),
+                                            coords
+                                    );
+                                    cams.add(c);
+                                }
+                            }
+                            // trigger refresh of recycler view
+                            recyclerViewAdapter.notifyDataSetChanged();
+                        } catch (JSONException e) {
+
+                        }
                     }
                 }, new Response.ErrorListener() {
-
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        Log.e("Error is ", "Error responce");
-
+                        Log.d("JSON", "Error: " + error.getMessage());
                     }
-                });*/
 
-// Access the RequestQueue through your singleton class.
-        // MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest);
-
+                });
+        // Add the request to the RequestQueue.
+        queue.add(jsonReq);
     }
 
 
