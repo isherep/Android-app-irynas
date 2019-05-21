@@ -25,17 +25,12 @@ public class TrafficCam {
         this.coords = coords;
     }
 
-    public void createMap() {
-
-        baseUrl.put("sdot", "http://www.seattle.gov/trafficcams/images/");
-        baseUrl.put("wsdot", "http://images.wsdot.wa.gov/nw/");
-    }
 
     public String imageUrl() {
-        return baseUrl.get(this.type) + this.imageUrl;
+        return this.imageUrl;
     }
 
     public String getLabel(){
-        return baseUrl.get(this.type)  + this.camLabel;
+        return this.camLabel;
     }
 }

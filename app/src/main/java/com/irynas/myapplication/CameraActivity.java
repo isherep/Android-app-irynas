@@ -3,6 +3,7 @@ package com.irynas.myapplication;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.android.volley.ParseError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 //import com.google.android.gms.common.api.Response;
 import com.android.volley.Request;
@@ -44,6 +47,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.jar.JarException;
 
 
 /*
@@ -57,8 +61,8 @@ public class CameraActivity extends AppCompatActivity {
     RecyclerView.LayoutManager recylerViewLayoutManager;
 
     List<TrafficCam> cams = new ArrayList<TrafficCam>();
-
-    TextView textView = (TextView)findViewById(R.id.description);
+//this goes into addapter
+   //
 
     //final TextView textView = (TextView) findViewById(R.id.text);
 
@@ -77,7 +81,8 @@ public class CameraActivity extends AppCompatActivity {
         ab.setDisplayHomeAsUpEnabled(true);
 
         context = getApplicationContext();
-        //creating recycler view
+
+        //---------------------Creating recycler view--------------------------
         recyclerView = (RecyclerView) findViewById(R.id.cameras_recycler_view);
         recylerViewLayoutManager = new LinearLayoutManager(context);
 
@@ -85,82 +90,98 @@ public class CameraActivity extends AppCompatActivity {
         recylerViewLayoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(recylerViewLayoutManager);
 
+        //initializing custom adapter
         recyclerViewAdapter = new CameraActivity.CustomAdapter();
+        //setting the adapter to the recyclerView
         recyclerView.setAdapter(recyclerViewAdapter);
-        
-        String url = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
+
+        String camUrl = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
 
         RequestQueue queue = Volley.newRequestQueue(this);
+       //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener
+       JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, camUrl, null, new Response.Listener<JSONArray>() {
 
-        JsonObjectRequest jsonReq = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d("CAMERAS", response.toString());
-                        try {
-                            JSONArray features = response.getJSONArray("Features"); // top-level node
-                            //each camera point
-                            for(int i = 1; i < features.length(); i++) {
-                                JSONObject point = features.getJSONObject(i);
-                                JSONArray pointCoords = point.getJSONArray("PointCoordinate");
-                                double[] coords = {pointCoords.getDouble(0), pointCoords.getDouble(1)};
+           @Override
+           public void onResponse(JSONArray response) {
+               //The Log.d() method is used to log debug messages.
+               Log.d("Cameras 1", response.toString());
 
-                                // points may have more than one camera
-                                JSONArray cameras = point.getJSONArray("Cameras");
-                                for (int j = 0; j < cameras.length(); j++) {
-                                    JSONObject camera = cameras.getJSONObject(j);
-                                    TrafficCam c = new TrafficCam(
-                                            camera.getString("cameralabel"),
-                                            camera.getString("ImageUrl"),
-                                            camera.getString("Type"),
-                                            coords
-                                    );
-                                    cams.add(c);
-                                }
-                            }
-                            // trigger refresh of recycler view
-                            recyclerViewAdapter.notifyDataSetChanged();
-                        } catch (JSONException e) {
+               try {
+                   for (int i = 0; i < response.length(); i++) {
+                       //get each individual camera at the position
+                       JSONObject indivCamera = response.getJSONObject(i);
 
-                        }
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d("JSON", "Error: " + error.getMessage());
-                    }
+                       double[] coords = {indivCamera.getDouble("ypos"), indivCamera.getDouble("xpos")};
 
-                });
-        // Add the request to the RequestQueue.
-        queue.add(jsonReq);
+                       TrafficCam cam = new TrafficCam(
+                               indivCamera.getString("cameralabel"),
+                               //pull the image url out of image object
+                               indivCamera.getJSONObject("imageurl").getString("url"),
+                               indivCamera.getString("ownershipcd"),
+                               coords
+                       );
+                       cams.add(cam);
+                   }
+                   recyclerViewAdapter.notifyDataSetChanged();
+
+               } catch (JSONException e) {
+                   //error handler
+                   Log.d("Cameras error", e.getMessage());
+               }
+
+
+           }
+
+       },
+               new Response.ErrorListener() {
+           @Override
+           public void onErrorResponse(VolleyError error) {
+               Log.d("JSON", "Error: " + error.getMessage());
+           }
+       });
+       queue.add(arrayRequest);
     }
 
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
+
+
+
         public class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
-            public TextView mName;
-            public ImageView mImage;
+
+           // TextView textView = (TextView)findViewById(R.id.description);
+
+            public TextView cameraLabel;
+            public ImageView camImage;
+            //creating ViewHolder with camera label and image
             public ViewHolder(View v) {
                 super(v);
 
-                mName = v.findViewById(R.id.description);
-                mImage = v.findViewById(R.id.image);
+                cameraLabel = v.findViewById(R.id.description);
+                camImage = v.findViewById(R.id.image);
             }
         }
-
+        //returns ViewHolder
+        //This method calls onCreateViewHolder(ViewGroup, int) to create a new RecyclerView.ViewHolder
+        // and initializes some private fields to be used by RecyclerView.
         @Override
         public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
 
-            // Inflate the view for this view holder
+            // Inflate the view for this view holder//
+            //getLayoutInflater() - Instantiates a layout XML file into its corresponding View objects.
+            // individual_cameras.xml --> item
+            //individual_cameras have description and image
             View item = getLayoutInflater().inflate(R.layout.individual_cameras, parent,
                     false);
 
             // Call the view holder's constructor, and pass the view to it;
             // return that new view holder
-            ViewHolder vh = new ViewHolder(item);
-            return vh;
+            //A ViewHolder describes an item view and metadata about its place within the RecyclerView.
+            //ViewHolders belong to the adapter.
+            ViewHolder holder = new ViewHolder(item);
+            return holder;
         }
 
         // Replace the contents of a view (invoked by the layout manager)
@@ -168,9 +189,11 @@ public class CameraActivity extends AppCompatActivity {
         public void onBindViewHolder(ViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            holder.mName.setText(cams.get(position).getLabel());
-            //String url = baseUrls.get(cameraList.get(position).getType()) + cameraList.get(position).getImageUrl();
-            Picasso.get().load(cams.get(position).imageUrl()).into(holder.mImage);
+            holder.cameraLabel.setText(cams.get(position).getLabel());
+           String imageUrl =  cams.get(position).imageUrl();
+            if(!imageUrl.isEmpty()) {
+                Picasso.get().load(imageUrl).into(holder.camImage);
+            }
         }
 
         // Return the size of your dataset (invoked by the layout manager)
