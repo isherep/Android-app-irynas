@@ -17,4 +17,6 @@
     <string name="about_name">About</string>
     <string name="about_text">About Section</string>
     <string name="about_page">About Page</string>
+    <string name="no_connection" translatable="false">"Looks like are not connected to the internet. "</string>
+    <string name="no_connection_next_line">Please make sure your WIFI and LTE is ON</string>
 </resources>

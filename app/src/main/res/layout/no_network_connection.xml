@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/app_bar"
+        layout="@layout/app_bar">
+    </include>
+
+    <!-- 'detail' activity that displays  title, year, director, image, and description for the selected item-->
+    <ImageView
+
+        android:id="@+id/NoConnectionImage"
+        android:layout_width="344dp"
+        android:layout_height="249dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:icon="@drawable/ic_signal_wifi_0_bar_black_24dp"
+        android:padding="1dp"
+        android:textAlignment="center"
+        app:srcCompat="@drawable/ic_signal_wifi_0_bar_black_24dp" />
+
+
+    <TextView
+        android:id="@+id/NoConnection"
+        android:layout_width="344dp"
+        android:layout_height="180dp"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="170dp"
+        android:text="@string/no_connection"
+
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="25dp" />
+
+
+    <TextView
+        android:id="@+id/NoConnection_next"
+        android:layout_width="344dp"
+        android:layout_height="180dp"
+
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="300dp"
+
+        android:text = "@string/no_connection_next_line"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Title"
+        android:textSize="25dp" />
+</android.support.design.widget.CoordinatorLayout>

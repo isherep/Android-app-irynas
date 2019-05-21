@@ -44,6 +44,10 @@
         <activity android:name=".CameraActivity"
             android:parentActivityName=".MainActivity"></activity>
 
+        <!--Adding the no connection cameras activity-->
+        <activity android:name=".NoNetworkConnection"
+            android:parentActivityName=".MainActivity"></activity>
+
     </application>
 
 </manifest>

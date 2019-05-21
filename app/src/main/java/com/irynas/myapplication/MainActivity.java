@@ -1,6 +1,10 @@
 package com.irynas.myapplication;
 
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Camera;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -22,6 +26,9 @@ import org.w3c.dom.Text;
 import static android.content.Intent.EXTRA_TEXT;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static boolean WIFIconnected = false;
+    private static boolean mobileConnected = false;
 
     private static final String TAG = "Main Activity";
 
@@ -103,8 +110,10 @@ you can check the version only once the user navigates to that portion of your a
                 startActivity(aboutIcon);
                 break;
             case R.id.location_icon:
-                Intent locationCameras = new Intent(this, CameraActivity.class);
-                startActivity(locationCameras);
+
+                    Intent locationCameras = new Intent(this, CameraActivity.class);
+                    startActivity(locationCameras);
+
                 break;
 
             default:
@@ -114,14 +123,5 @@ you can check the version only once the user navigates to that portion of your a
         return super.onOptionsItemSelected(item);
     }
 
-    //protected void openListActivity() {
-        //Intent intent = new Intent(this, ListViewItemsActivity.class);
-        //startActivity(intent);
-   // }
 
-    public void sendMessage(View view) {
-        TextView txt;
-        // txt = (TextView) findViewById(R.id.button2);
-
-    }
 }

@@ -2,6 +2,7 @@ package com.irynas.myapplication;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -74,7 +75,7 @@ public class CameraActivity extends AppCompatActivity {
 
     private static final String TAG = "Camera Activity";
 
-     //this goes into addapter
+    //this goes into addapter
     //final TextView textView = (TextView) findViewById(R.id.text);
 
     public void onCreate(Bundle savedInstances) {
@@ -113,51 +114,62 @@ public class CameraActivity extends AppCompatActivity {
 
         //----------------Requesting Json info using Valley
 
-       // add the cache object to the RequestQueue
-        checkNetworkConnections();
+        // add the cache object to the RequestQueue
+        // Your activity should check the device network status and
+        // display a graceful warning if not connected.
+        // You should only make a network request if your application has connectivity
+        boolean connected = checkNetworkConnections();
 
-        RequestQueue queue = Volley.newRequestQueue(this);
+        if (connected) {
 
-       //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener - interface
-        //Callbacks can be easily implemented with Java interfaces.
-       JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, camUrl, null, new Response.Listener<JSONArray>() {
+            RequestQueue queue = Volley.newRequestQueue(this);
 
-           @Override
-           public void onResponse(JSONArray response) {
-               //The Log.d() method is used to log debug messages.
-               Log.d("Cameras 1", response.toString());
+            //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener - interface
+            //Callbacks can be easily implemented with Java interfaces.
+            JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, camUrl, null, new Response.Listener<JSONArray>() {
 
-               try {
-                   for (int i = 0; i < response.length(); i++) {
-                       //get each individual camera at the position
-                       JSONObject indivCamera = response.getJSONObject(i);
+                @Override
+                public void onResponse(JSONArray response) {
+                    //The Log.d() method is used to log debug messages.
+                    Log.d("Cameras 1", response.toString());
 
-                       double[] coords = {indivCamera.getDouble("ypos"), indivCamera.getDouble("xpos")};
+                    try {
+                        for (int i = 0; i < response.length(); i++) {
+                            //get each individual camera at the position
+                            JSONObject indivCamera = response.getJSONObject(i);
 
-                       TrafficCam cam = new TrafficCam(
-                               indivCamera.getString("cameralabel"),
-                               //pull the image url out of image object
-                               indivCamera.getJSONObject("imageurl").getString("url"),
-                               indivCamera.getString("ownershipcd"),
-                               coords
-                       );
-                       cams.add(cam);
-                   }
-                   recyclerViewAdapter.notifyDataSetChanged();
+                            double[] coords = {indivCamera.getDouble("ypos"), indivCamera.getDouble("xpos")};
 
-               } catch (JSONException e) {
-                   //error handler
-                   Log.d("Cameras error", e.getMessage());
-               }
-           }
-       },
-               new Response.ErrorListener() {
-           @Override
-           public void onErrorResponse(VolleyError error) {
-               Log.d("JSON", "Error: " + error.getMessage());
-           }
-       });
-       queue.add(arrayRequest);
+                            TrafficCam cam = new TrafficCam(
+                                    indivCamera.getString("cameralabel"),
+                                    //pull the image url out of image object
+                                    indivCamera.getJSONObject("imageurl").getString("url"),
+                                    indivCamera.getString("ownershipcd"),
+                                    coords
+                            );
+                            cams.add(cam);
+                        }
+                        recyclerViewAdapter.notifyDataSetChanged();
+
+                    } catch (JSONException e) {
+                        //error handler
+                        Log.d("Cameras error", e.getMessage());
+                    }
+                }
+            },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d("JSON", "Error: " + error.getMessage());
+                        }
+                    });
+            queue.add(arrayRequest);
+
+        } else {
+            //display text activity
+            Intent intent = new Intent(this, NoNetworkConnection.class);
+            startActivity(intent);
+        }
     }
 
     //----------------Creating custom RecyclerView Adapter--------------------------
@@ -168,10 +180,11 @@ public class CameraActivity extends AppCompatActivity {
         public class ViewHolder extends RecyclerView.ViewHolder {
             // each data item is just a string in this case
 
-           // TextView textView = (TextView)findViewById(R.id.description);
+            // TextView textView = (TextView)findViewById(R.id.description);
 
             public TextView cameraLabel;
             public ImageView camImage;
+
             //creating ViewHolder with camera label and image
             public ViewHolder(View v) {
                 super(v);
@@ -180,11 +193,12 @@ public class CameraActivity extends AppCompatActivity {
                 camImage = v.findViewById(R.id.image);
             }
         }
+
         //returns ViewHolder
         //This method calls onCreateViewHolder(ViewGroup, int) to create a new RecyclerView.ViewHolder
         // and initializes some private fields to be used by RecyclerView.
         @Override
-        public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        public CustomAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
             // Inflate the view for this view holder//
             //getLayoutInflater() - Instantiates a layout XML file into its corresponding View objects.
@@ -207,8 +221,8 @@ public class CameraActivity extends AppCompatActivity {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.cameraLabel.setText(cams.get(position).getLabel());
-            String imageUrl =  cams.get(position).imageUrl();
-            if(!imageUrl.isEmpty()) {
+            String imageUrl = cams.get(position).imageUrl();
+            if (!imageUrl.isEmpty()) {
                 Picasso.get().load(imageUrl).into(holder.camImage);
             }
         }
@@ -222,24 +236,27 @@ public class CameraActivity extends AppCompatActivity {
 
     //-----------------Checking connection-------------------------
 
-    private void checkNetworkConnections(){
+    public boolean checkNetworkConnections() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-            if(networkInfo !=null && networkInfo.isConnected()){
 
-                //different types of connection
+        if (networkInfo != null && networkInfo.isConnected()) {
 
-                WIFIconnected = networkInfo.getType() == connectivityManager.TYPE_WIFI;
-                mobileConnected = networkInfo.getType() == connectivityManager.TYPE_MOBILE;
-                if(WIFIconnected){
-                    Log.i("WIFI connected", "successfully");
+            //different types of connection
 
-                }else if(mobileConnected) {
-                    Log.i("Mobile connected ", "successfuly");
-                }
-            } else {
-                    Log.i("Connection status ", "No connection");
+            WIFIconnected = networkInfo.getType() == connectivityManager.TYPE_WIFI;
+            mobileConnected = networkInfo.getType() == connectivityManager.TYPE_MOBILE;
+            if (WIFIconnected) {
+                Log.i("WIFI connected", "successfully");
+                return true;
+            } else if (mobileConnected) {
+                Log.i("Mobile connected ", "successfuly");
+                return true;
             }
-
-            }
+        } else {
+            Log.i("Connection status ", "No connection");
+            return false;
+        }
+        return false;
+    }
 }
