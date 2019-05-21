@@ -2,6 +2,8 @@ package com.irynas.myapplication;
 
 import android.app.DownloadManager;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
@@ -50,8 +52,14 @@ import java.util.List;
 import java.util.jar.JarException;
 
 
-/*
-   This is for the Homework 5
+/**
+ * This is for the Homework 5
+ * Your activity should check the device network status and display a graceful warning if not connected.
+ * You should only make a network request if your application has connectivity
+ * if your application requires making network calls, the calls need to be performed on the worker
+ * threads that run in the background, not on the main thread.
+ * You could use a Java HTTP client library to send and receive data over the network,
+ * but the network call itself should be performed by a worker thread.
  */
 public class CameraActivity extends AppCompatActivity {
 
@@ -59,17 +67,22 @@ public class CameraActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
     RecyclerView.LayoutManager recylerViewLayoutManager;
-
+    private static boolean WIFIconnected = false;
+    private static boolean mobileConnected = false;
     List<TrafficCam> cams = new ArrayList<TrafficCam>();
-//this goes into addapter
-   //
 
+
+    private static final String TAG = "Camera Activity";
+
+     //this goes into addapter
     //final TextView textView = (TextView) findViewById(R.id.text);
 
     public void onCreate(Bundle savedInstances) {
         super.onCreate(savedInstances);
 
         setContentView(R.layout.camera_activity);
+
+        Log.i(TAG, "started on Create");
         //add the toolbar
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
@@ -83,6 +96,7 @@ public class CameraActivity extends AppCompatActivity {
         context = getApplicationContext();
 
         //---------------------Creating recycler view--------------------------
+
         recyclerView = (RecyclerView) findViewById(R.id.cameras_recycler_view);
         recylerViewLayoutManager = new LinearLayoutManager(context);
 
@@ -97,8 +111,15 @@ public class CameraActivity extends AppCompatActivity {
 
         String camUrl = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
 
+        //----------------Requesting Json info using Valley
+
+       // add the cache object to the RequestQueue
+        checkNetworkConnections();
+
         RequestQueue queue = Volley.newRequestQueue(this);
-       //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener
+
+       //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener - interface
+        //Callbacks can be easily implemented with Java interfaces.
        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, camUrl, null, new Response.Listener<JSONArray>() {
 
            @Override
@@ -128,10 +149,7 @@ public class CameraActivity extends AppCompatActivity {
                    //error handler
                    Log.d("Cameras error", e.getMessage());
                }
-
-
            }
-
        },
                new Response.ErrorListener() {
            @Override
@@ -142,10 +160,9 @@ public class CameraActivity extends AppCompatActivity {
        queue.add(arrayRequest);
     }
 
+    //----------------Creating custom RecyclerView Adapter--------------------------
 
     public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
-
-
 
 
         public class ViewHolder extends RecyclerView.ViewHolder {
@@ -190,7 +207,7 @@ public class CameraActivity extends AppCompatActivity {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
             holder.cameraLabel.setText(cams.get(position).getLabel());
-           String imageUrl =  cams.get(position).imageUrl();
+            String imageUrl =  cams.get(position).imageUrl();
             if(!imageUrl.isEmpty()) {
                 Picasso.get().load(imageUrl).into(holder.camImage);
             }
@@ -202,4 +219,27 @@ public class CameraActivity extends AppCompatActivity {
             return cams.size();
         }
     }
+
+    //-----------------Checking connection-------------------------
+
+    private void checkNetworkConnections(){
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+            if(networkInfo !=null && networkInfo.isConnected()){
+
+                //different types of connection
+
+                WIFIconnected = networkInfo.getType() == connectivityManager.TYPE_WIFI;
+                mobileConnected = networkInfo.getType() == connectivityManager.TYPE_MOBILE;
+                if(WIFIconnected){
+                    Log.i("WIFI connected", "successfully");
+
+                }else if(mobileConnected) {
+                    Log.i("Mobile connected ", "successfuly");
+                }
+            } else {
+                    Log.i("Connection status ", "No connection");
+            }
+
+            }
 }

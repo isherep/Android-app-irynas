@@ -6,6 +6,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
@@ -21,6 +22,8 @@ import org.w3c.dom.Text;
 import static android.content.Intent.EXTRA_TEXT;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "Main Activity";
 
     // rewrite to Kotlin later
     //Creating the lists of movie names
@@ -39,6 +42,8 @@ you can check the version only once the user navigates to that portion of your a
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
+        Log.i(TAG, "started onCreate");
+
         //toolbar.setLogo(R.drawable.ic_info_black_24dp);
 
        Button button2 = (Button) findViewById(R.id.button2);

@@ -20,7 +20,7 @@ public class MovieDetailViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.movie_detail);
         Intent intent = getIntent();
-        Log.i(TAG, "started");
+        Log.i(TAG, "started onCreate");
         Bundle bundle = getIntent().getExtras();
         //pulling elements values from key on Bundle
         String ImageUrlReceived = bundle.getString("ImageURL");

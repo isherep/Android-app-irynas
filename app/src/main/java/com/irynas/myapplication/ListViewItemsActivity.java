@@ -49,7 +49,7 @@ public class ListViewItemsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_listview);
 
-        Log.i(TAG, "started");
+        Log.i(TAG, "started onCreate");
 
         ImageView imageView = findViewById(R.id.movieImage);
 
