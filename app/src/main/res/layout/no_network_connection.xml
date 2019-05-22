@@ -35,7 +35,7 @@
         android:layout_marginRight="20dp"
         android:layout_marginTop="170dp"
         android:text="@string/no_connection"
-
+        android:fontFamily="casual"
         android:gravity="center"
         android:layout_gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
@@ -50,10 +50,10 @@
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
         android:layout_marginTop="300dp"
-
+        android:fontFamily="casual"
         android:text = "@string/no_connection_next_line"
         android:gravity="center"
         android:layout_gravity="center"
         android:textAppearance="@style/TextAppearance.AppCompat.Title"
-        android:textSize="25dp" />
+        android:textSize="20dp" />
 </android.support.design.widget.CoordinatorLayout>

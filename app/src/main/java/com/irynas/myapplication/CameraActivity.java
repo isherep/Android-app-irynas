@@ -112,7 +112,24 @@ public class CameraActivity extends AppCompatActivity {
 
         String camUrl = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
 
-        //----------------Requesting Json info using Valley
+        //----------------Requesting Json info using Valley----------------------
+
+       //create a list of WSDOT cammeras
+
+
+        // if(wsdotbutton is checked){
+
+            //create a list of WSDOT cammeras
+            //show the list
+
+        // }else if(SDOT is checked){
+
+            //create a list of SDOT cammeras
+            //show the list
+
+
+        // }
+
 
         // add the cache object to the RequestQueue
         // Your activity should check the device network status and
@@ -147,6 +164,10 @@ public class CameraActivity extends AppCompatActivity {
                                     indivCamera.getString("ownershipcd"),
                                     coords
                             );
+
+                            //if indivCamera.type == SWDOT  --> cams.add(indivCamera).
+                            //
+
                             cams.add(cam);
                         }
                         recyclerViewAdapter.notifyDataSetChanged();

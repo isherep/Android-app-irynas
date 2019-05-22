@@ -73,7 +73,23 @@ you can check the version only once the user navigates to that portion of your a
                         .setAction("Action", null).show();
             }
         });
+
+
+        Button mapButton = (Button)findViewById(R.id.button3);
+
+        mapButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
