@@ -52,10 +52,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
 
-        //------------Getting location--------------------
-
-
     }
+    //------------Getting location--------------------
 
     public void getDeviceLocation() {
 
@@ -71,23 +69,21 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             public void onSuccess(Location location) {
                                 if (location != null) {
                                     mMap.setMyLocationEnabled(true);
-                                    //handle location object
 
-                                    //currentLocation = location;
-                                    //This was showing last location - Germany
-                                    //Double currentLangt = currentLocation.getLatitude();
-                                    //Double currentAltit = currentLocation.getAltitude();
+                                    LatLng myLocation = new LatLng(location.getLatitude(), location.getLongitude());
+                                    mMap.setMinZoomPreference(9);
+                                    //mMap.setMinZoomPreference(10); // zoom to city level
+                                    mMap.addMarker(new MarkerOptions().position(myLocation)
+                                            .title("Iryna"));
+                                    mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
 
-                                    //LatLng userLoc = new LatLng(currentLangt, currentAltit);
-                                    //mMap.addMarker(new MarkerOptions().position(userLoc).title("User is in Mercer Island"));
+                                    mMap.setMinZoomPreference(9);
+
                                 }
                             }
                         }
                 );
-
             }
-
-
         } catch (SecurityException e) {
 
             Log.e("Security Exception ", "Get device location");
@@ -120,13 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (locationPermissionGranted) {
             getDeviceLocation();
 
-
-            //Double currentLangt = currentLocation.getLatitude();
-            //Double currentAltit = currentLocation.getAltitude();
-
-            //LatLng userLoc = new LatLng(currentAltit, currentLangt);
-           // mMap.addMarker(new MarkerOptions().position(userLoc).title("User is in Mercer Island"));
-
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -139,15 +128,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // for ActivityCompat#requestPermissions for more details.
                 return;
             }
-
-            //Double currentLangt = getDeviceLocation();
             mMap.setMyLocationEnabled(true);
-        }
 
-        // Add a marker in Sydney and move the camera
-        //LatLng sydney = new LatLng(-34, 151);
-        //LatLng userLocation = getDeviceLocation();
-       // mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        }
 
 }
