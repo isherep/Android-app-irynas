@@ -33,4 +33,8 @@ public class TrafficCam {
     public String getLabel(){
         return this.camLabel;
     }
+
+    public double[] getCoords(){
+        return this.coords;
+    }
 }

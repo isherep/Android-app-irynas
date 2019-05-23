@@ -60,7 +60,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLocationPermission();
         showCameraMarkers();
 
-       
+
 
     }
     //------------Getting location--------------------
@@ -101,9 +101,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void showCameraMarkers(){
-        //You have to import java.lang.reflect.Type ;
-
-        //in on onCreate() to retrieve ArrayList:
 
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
 
@@ -112,7 +109,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
         for (TrafficCam cams : camsList){
             Log.i("Data", cams.getLabel());
+
+            LatLng position = new LatLng(cams.getCoords()[0], cams.getCoords()[1]);
+
+            Log.i("POSITIONS ", position.toString());
+            /*
+
+        for (int i=0; i<cameraList.size(); i++) {
+            TrafficCam c = cameraList.get(i);
+            LatLng position = new LatLng(c.getCoords()[0], c.getCoords()[1]);
+            Marker m = mMap.addMarker(new MarkerOptions()
+                .position(position)
+                .title(c.getDescription())
+                .snippet(c.imageUrl()));
+            m.setTag(i);
         }
+             */
+            //Lang
+            //Lat
+        }
+
+
 
 
     }
