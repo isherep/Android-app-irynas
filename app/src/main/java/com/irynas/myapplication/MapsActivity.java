@@ -58,7 +58,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         getLocationPermission();
-        showCameraMarkers();
+        //showCameraMarkers();
 
        /* String camsListAsString = getIntent().getStringExtra("cameras_as_string");
         Log.i("CamString", camsListAsString);
@@ -117,9 +117,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Gson gson = new Gson();
         Type type = new TypeToken<List<TrafficCam>>(){}.getType();
         List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
-        for (TrafficCam cams : camsList){
-            Log.i("Data", cams.getLabel());
-        }
+       // for (TrafficCam cams : camsList){
+         //   Log.i("Data", cams.getLabel());
+        //}
 
 
     }

@@ -16,6 +16,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -167,11 +168,7 @@ public class CameraActivity extends AppCompatActivity {
                                     indivCamera.getString("ownershipcd"),
                                     coords
                             );
-
-                            //if indivCamera.type == SWDOT  --> cams.add(indivCamera).
-                            //
-
-                            cams.add(cam);
+                             cams.add(cam);
                         }
                         recyclerViewAdapter.notifyDataSetChanged();
 
@@ -187,6 +184,7 @@ public class CameraActivity extends AppCompatActivity {
                             Log.d("JSON", "Error: " + error.getMessage());
                         }
                     });
+
             queue.add(arrayRequest);
 
         } else {
@@ -195,13 +193,34 @@ public class CameraActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
-        //saving cameras to the intent
+        Button camsButton = (Button) findViewById(R.id.locate_cameras);
 
+        camsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(CameraActivity.this, MapsActivity.class);
+                Gson gson = new Gson();
+                String jsonCams = gson.toJson(cams);
+                Log.i("JSON CAMS","CAMERAS");
+                intent.putExtra("cameras_as_string", jsonCams);
+                startActivity(intent);
+
+            }
+        }
+
+
+        );
+/*
+        //saving cameras to the intent
         Intent intent = new Intent(CameraActivity.this, MapsActivity.class);
         Gson gson = new Gson();
         String jsonCams = gson.toJson(cams);
+        Log.i("CAMERA DATA", "GSON CAMERAS");
         intent.putExtra("cameras_as_string", jsonCams);
         startActivity(intent);
+*/
+
+
     }
 
     //----------------Creating custom RecyclerView Adapter--------------------------
