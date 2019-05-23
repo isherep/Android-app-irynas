@@ -20,6 +20,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,7 +28,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import java.util.List;
-import java.lang.reflect.Type ;
+import java.lang.reflect.Type;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -58,8 +59,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         getLocationPermission();
-        showCameraMarkers();
-
+        //showCameraMarkers();
 
 
     }
@@ -88,7 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                                     mMap.moveCamera(CameraUpdateFactory.newLatLng(myLocation));
 
                                     mMap.setMinZoomPreference(9);
-
+                                    //showCameraMarkers();
                                 }
                             }
                         }
@@ -100,39 +100,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    public void showCameraMarkers(){
+    public void showCameraMarkers() {
 
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
 
         Gson gson = new Gson();
-        Type type = new TypeToken<List<TrafficCam>>(){}.getType();
+        Type type = new TypeToken<List<TrafficCam>>() {
+        }.getType();
         List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
-        for (TrafficCam cams : camsList){
+
+        for (TrafficCam cams : camsList) {
             Log.i("Data", cams.getLabel());
 
             LatLng position = new LatLng(cams.getCoords()[0], cams.getCoords()[1]);
 
             Log.i("POSITIONS ", position.toString());
-            /*
+            Marker m = mMap.addMarker(new MarkerOptions().position(position).title(cams.getLabel()).snippet(cams.imageUrl()));
 
-        for (int i=0; i<cameraList.size(); i++) {
-            TrafficCam c = cameraList.get(i);
-            LatLng position = new LatLng(c.getCoords()[0], c.getCoords()[1]);
-            Marker m = mMap.addMarker(new MarkerOptions()
-                .position(position)
-                .title(c.getDescription())
-                .snippet(c.imageUrl()));
-            m.setTag(i);
+            m.setTag(cams);
         }
-             */
-            //Lang
-            //Lat
-        }
-
-
-
-
     }
+
 
     private void getLocationPermission() {
 
@@ -143,7 +131,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             ActivityCompat.requestPermissions(this, permission, LOCATION_REQUEST_CODE);
         }
     }
-
 
     /**
      * Manipulates the map once available.
@@ -159,23 +146,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         if (locationPermissionGranted) {
             getDeviceLocation();
+            showCameraMarkers();
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
                 // here to request the missing permissions, and then overriding
-                   //public void onRequestPermissionsResult(int requestCode, permission, int[] grantResults){
-                    //locationPermissionGranted = true;
+                //public void onRequestPermissionsResult(int requestCode, permission, int[] grantResults){
+                //locationPermissionGranted = true;
                 ActivityCompat.requestPermissions(this, permission, LOCATION_REQUEST_CODE);
-                }
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
-                return;
             }
-            mMap.setMyLocationEnabled(true);
-
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
         }
+        mMap.setMyLocationEnabled(true);
 
-
+    }
 
 }
