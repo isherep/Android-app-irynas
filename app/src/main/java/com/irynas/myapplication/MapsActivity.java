@@ -23,6 +23,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.util.List;
+import java.lang.reflect.Type ;
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -41,6 +46,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private static final String[] permission = {ACCESS_COARSE_LOCATION};
     private boolean locationPermissionGranted;
 
+    private CameraActivity camActivity;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +58,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         getLocationPermission();
+        showCameraMarkers();
+
+       /* String camsListAsString = getIntent().getStringExtra("cameras_as_string");
+        Log.i("CamString", camsListAsString);
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<TrafficCam>>(){}.getType();
+        List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
+        for (TrafficCam cams : camsList){
+            Log.i("Data", cams.getLabel());
+        }*/
 
     }
     //------------Getting location--------------------
@@ -88,6 +105,23 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             Log.e("Security Exception ", "Get device location");
         }
+    }
+
+    public void showCameraMarkers(){
+        //You have to import java.lang.reflect.Type ;
+
+        //in on onCreate() to retrieve ArrayList:
+
+        String camsListAsString = getIntent().getStringExtra("cameras_as_string");
+
+        Gson gson = new Gson();
+        Type type = new TypeToken<List<TrafficCam>>(){}.getType();
+        List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
+        for (TrafficCam cams : camsList){
+            Log.i("Data", cams.getLabel());
+        }
+
+
     }
 
     private void getLocationPermission() {
@@ -131,5 +165,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.setMyLocationEnabled(true);
 
         }
+
+
 
 }

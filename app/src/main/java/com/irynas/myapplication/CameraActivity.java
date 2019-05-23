@@ -3,6 +3,7 @@ package com.irynas.myapplication;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Camera;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -51,6 +52,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.jar.JarException;
+import com.google.gson.Gson;
 
 
 /**
@@ -70,6 +72,7 @@ public class CameraActivity extends AppCompatActivity {
     RecyclerView.LayoutManager recylerViewLayoutManager;
     private static boolean WIFIconnected = false;
     private static boolean mobileConnected = false;
+    //list of cameras
     List<TrafficCam> cams = new ArrayList<TrafficCam>();
 
 
@@ -191,6 +194,14 @@ public class CameraActivity extends AppCompatActivity {
             Intent intent = new Intent(this, NoNetworkConnection.class);
             startActivity(intent);
         }
+
+        //saving cameras to the intent
+
+        Intent intent = new Intent(CameraActivity.this, MapsActivity.class);
+        Gson gson = new Gson();
+        String jsonCams = gson.toJson(cams);
+        intent.putExtra("cameras_as_string", jsonCams);
+        startActivity(intent);
     }
 
     //----------------Creating custom RecyclerView Adapter--------------------------
@@ -280,4 +291,19 @@ public class CameraActivity extends AppCompatActivity {
         }
         return false;
     }
+
+    /**
+     * Get's traffic cameras
+     *
+     * @return The list of traffic cameral objects
+     */
+    public void getCameras(){
+
+        Intent intent = new Intent(CameraActivity.this, MapsActivity.class);
+        Gson gson = new Gson();
+        String jsonCams = gson.toJson(cams);
+        intent.putExtra("cameras_as_string", jsonCams);
+        startActivity(intent);
+    }
+
 }
