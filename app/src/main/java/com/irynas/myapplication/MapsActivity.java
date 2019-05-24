@@ -60,8 +60,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         getLocationPermission();
         //showCameraMarkers();
-
-
     }
     //------------Getting location--------------------
 
@@ -100,6 +98,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Shows markers of each camera on the map
+     */
     public void showCameraMarkers() {
 
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
@@ -147,6 +148,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (locationPermissionGranted) {
             getDeviceLocation();
             showCameraMarkers();
+            getLocationPermission();
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
