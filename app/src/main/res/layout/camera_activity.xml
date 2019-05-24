@@ -30,15 +30,23 @@
     <Button
         android:id="@+id/locate_cameras"
         android:layout_width="98dp"
-        android:layout_height="69dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="left|top"
-        android:padding="10dp"
-        android:paddingLeft="10dp"
-        android:text="Locate Traffic Cameras"
+        android:layout_marginStart="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@color/common_google_signin_btn_text_dark_default"
+        android:fontFamily="casual"
+        android:padding="2dp"
+        android:text="Show Cameras On The Map"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        android:textSize="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/app_bar"
-        app:layout_constraintTop_toBottomOf="@+id/app_bar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 

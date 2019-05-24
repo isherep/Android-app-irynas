@@ -71,6 +71,7 @@ public class CameraActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecyclerView.Adapter recyclerViewAdapter;
     RecyclerView.LayoutManager recylerViewLayoutManager;
+
     private static boolean WIFIconnected = false;
     private static boolean mobileConnected = false;
     //list of cameras
@@ -198,11 +199,11 @@ public class CameraActivity extends AppCompatActivity {
         camsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(CameraActivity.this, MapsActivity.class);
-                Gson gson = new Gson();
+                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+                /*Gson gson = new Gson();
                 String jsonCams = gson.toJson(cams);
                 Log.i("JSON CAMS","CAMERAS");
-                intent.putExtra("cameras_as_string", jsonCams);
+                intent.putExtra("cameras_as_string", jsonCams);*/
                 startActivity(intent);
 
             }

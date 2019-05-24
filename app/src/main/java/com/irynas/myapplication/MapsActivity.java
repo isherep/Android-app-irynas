@@ -1,14 +1,24 @@
 package com.irynas.myapplication;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -27,8 +37,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.lang.reflect.Type;
+
+
 
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 
@@ -49,6 +66,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private CameraActivity camActivity;
 
+    private static boolean WIFIconnected = false;
+    private static boolean mobileConnected = false;
+
+    //list of cameras
+    List<TrafficCam> cams = new ArrayList<TrafficCam>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,6 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         getLocationPermission();
+        loadCameras();
         //showCameraMarkers();
     }
     //------------Getting location--------------------
@@ -98,11 +122,103 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+
+public void loadCameras(){
+
+    String camUrl = "http://brisksoft.us/ad340/traffic_cameras_merged.json";
+
+    //----------------Requesting Json info using Valley----------------------
+
+    // You should only make a network request if your application has connectivity
+    boolean connected = checkNetworkConnections();
+
+    if (connected) {
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+
+        //params - String url, @Nullable Listener<JSONArray>, Response.ErrorListener - interface
+        //Callbacks can be easily implemented with Java interfaces.
+        JsonArrayRequest arrayRequest = new JsonArrayRequest(Request.Method.GET, camUrl, null, new Response.Listener<JSONArray>() {
+
+            @Override
+            public void onResponse(JSONArray response) {
+                //The Log.d() method is used to log debug messages.
+                Log.d("Cameras 1", response.toString());
+
+                try {
+                    for (int i = 0; i < response.length(); i++) {
+                        //get each individual camera at the position
+                        JSONObject indivCamera = response.getJSONObject(i);
+
+                        double[] coords = {indivCamera.getDouble("ypos"), indivCamera.getDouble("xpos")};
+
+                        TrafficCam cam = new TrafficCam(
+                                indivCamera.getString("cameralabel"),
+                                //pull the image url out of image object
+                                indivCamera.getJSONObject("imageurl").getString("url"),
+                                indivCamera.getString("ownershipcd"),
+                                coords
+                        );
+                        cams.add(cam);
+                        Log.i("CAMERA DATA", cam.toString());
+                    }
+                    //recyclerViewAdapter.notifyDataSetChanged();
+                    showCameraMarkers();
+
+                } catch (JSONException e) {
+                    //error handler
+                    Log.d("Cameras error", e.getMessage());
+                }
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("JSON", "Error: " + error.getMessage());
+                    }
+                });
+
+        queue.add(arrayRequest);
+
+    } else {
+        //display text activity
+        Intent intent = new Intent(this, NoNetworkConnection.class);
+        startActivity(intent);
+    }
+}
+
+
+    public boolean checkNetworkConnections() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+
+        if (networkInfo != null && networkInfo.isConnected()) {
+
+            //different types of connection
+
+            WIFIconnected = networkInfo.getType() == connectivityManager.TYPE_WIFI;
+            mobileConnected = networkInfo.getType() == connectivityManager.TYPE_MOBILE;
+            if (WIFIconnected) {
+                Log.i("WIFI connected", "successfully");
+                return true;
+            } else if (mobileConnected) {
+                Log.i("Mobile connected ", "successfuly");
+                return true;
+            }
+        } else {
+            Log.i("Connection status ", "No connection");
+            return false;
+        }
+        return false;
+    }
+
     /**
      * Shows markers of each camera on the map
      */
     public void showCameraMarkers() {
 
+        Log.i("CAMERA DATA", cams.toString());
+        /*
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
 
         Gson gson = new Gson();
@@ -119,6 +235,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             Marker m = mMap.addMarker(new MarkerOptions().position(position).title(cams.getLabel()).snippet(cams.imageUrl()));
 
             m.setTag(cams);
+        }
+        */
+
+        for(TrafficCam camera: cams){
+            Log.i("CAMERA DATA", camera.toString());
+           LatLng position = new LatLng(camera.getCoords()[0], camera.getCoords()[1]);
+           Marker m = mMap.addMarker(new MarkerOptions().position(position).title(camera.getLabel()).snippet(camera.imageUrl()));
+           m.setTag(camera);
         }
     }
 
@@ -148,7 +272,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (locationPermissionGranted) {
             getDeviceLocation();
             showCameraMarkers();
-            getLocationPermission();
+            //getLocationPermission();
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
