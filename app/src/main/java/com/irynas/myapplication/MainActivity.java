@@ -12,6 +12,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.View;
@@ -45,9 +46,15 @@ public class MainActivity extends AppCompatActivity {
     private EditText mEmailField;
     private EditText mPasswordField;
 
+    private String lastEmail;
+    private String lastPassword;
+
     private static final String TAG = "Main Activity";
-    private static final String NAME = "AD430 - IRYNA";
+    private static final String NAME = "AD340 - IRYNA";
     private ProgressBar progressBar;
+
+
+
 
     // rewrite to Kotlin later
     //Creating the lists of movie names
@@ -70,14 +77,14 @@ you can check the version only once the user navigates to that portion of your a
 
         FirebaseApp.initializeApp(this);
 
-        //toolbar.setLogo(R.drawable.ic_info_black_24dp);
+
 
        Button button2 = (Button) findViewById(R.id.button2);
 
         button2.setOnClickListener(new View.OnClickListener() {
 
                 @Override
-                        public void onClick(View view) {
+                public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(), ListViewItemsActivity.class);
                     startActivity(intent);
                 }
@@ -121,7 +128,17 @@ you can check the version only once the user navigates to that portion of your a
          * You can use this activityPreview the document & layoutPreview the document as starting points
          */
         mEmailField = (EditText)findViewById(R.id.email);
+
         mPasswordField = (EditText)findViewById(R.id.password);
+        //set last remembered email password in the field
+        //Fetching last stored email and password from the database
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String userEmail = user.getEmail();
+        //String userPassword = user.getPassword();
+
+        mEmailField.setText(userEmail);
+        mPasswordField.setText(lastPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -145,63 +162,83 @@ you can check the version only once the user navigates to that portion of your a
 
         Log.d(TAG, "signIn");
 
-        //validate form here later
 
-        //turning the entered info from email and passowd fields into variables
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
-        // sign into Firebase project
-        //FirebaseApp.initializeApp(getApplicationContext());
-        FirebaseAuth mAuth = FirebaseAuth.getInstance();
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("FIREBASE", "signIn:onComplete:" + task.isSuccessful());
+        //validate form here
 
-                        if (task.isSuccessful()) {
-                            // update profile
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(NAME)
-                                    .build();
 
-                            user.updateProfile(profileUpdates)
-                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if (task.isSuccessful()) {
-                                                Log.d("FIREBASE", "User profile updated.");
-                                                // Go to FirebaseActivity
-                                                startActivity(new Intent(MainActivity.this, TeamActivity.class));
+        boolean isValid = validate(email, password);
+        if (isValid) {
+            //turning the entered info from email and passowd fields into variables
+
+            // sign into Firebase project
+            //FirebaseApp.initializeApp(getApplicationContext());
+            FirebaseAuth mAuth = FirebaseAuth.getInstance();
+            mAuth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            Log.d("FIREBASE", "signIn:onComplete:" + task.isSuccessful());
+
+                            if (task.isSuccessful()) {
+                                // update profile
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                                UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                        .setDisplayName(NAME)
+                                        .build();
+
+                                user.updateProfile(profileUpdates)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if (task.isSuccessful()) {
+                                                    Log.d("FIREBASE", "User profile updated.");
+                                                    // Go to FirebaseActivity
+                                                    startActivity(new Intent(MainActivity.this, TeamActivity.class));
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
 
-                        } else {
-                            Log.d("FIREBASE", "sign-in failed");
+                            } else {
+                                Log.d("FIREBASE", "sign-in failed");
 
-                            Toast.makeText(MainActivity.this, "Sign In Failed",
-                                    Toast.LENGTH_SHORT).show();
+                                Toast.makeText(MainActivity.this, "Sign In Failed",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+
+                    });
+        }
     }
 
-    /*
-    private void onAuthSuccess(FirebaseUser user) {
-        String username = usernameFromEmail(user.getEmail());
+    /**
+     * Validates information in the email and password fields
+     * @return
+     */
+    public boolean validate(String email, String password){
+        boolean result = true;
+        if (TextUtils.isEmpty(email)) {
+            mEmailField.setError("Required");
+            result = false;
 
-        // Write new user
-        writeNewUser(user.getUid(), username, user.getEmail());
+        } else {
+            mEmailField.setError(null);
+            lastEmail = mEmailField.getText().toString();
+        }
 
-        // Go to MainActivity
-        startActivity(new Intent(SignInActivity.this, MainActivity.class));
-        finish();
+        if (TextUtils.isEmpty(password)) {
+            mPasswordField.setError("Required");
+            result = false;
+
+        } else {
+            mPasswordField.setError(null);
+            lastPassword = mPasswordField.getText().toString();
+        }
+        return result;
     }
-    */
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
