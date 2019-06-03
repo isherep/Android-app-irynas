@@ -82,7 +82,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
         getLocationPermission();
-        loadCameras();
+        //loadCameras();
         //showCameraMarkers();
     }
     //------------Getting location--------------------
@@ -271,6 +271,7 @@ public void loadCameras(){
         mMap = googleMap;
         if (locationPermissionGranted) {
             getDeviceLocation();
+            loadCameras();
             showCameraMarkers();
             //getLocationPermission();
 
