@@ -2,6 +2,7 @@ package com.irynas.myapplication;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Camera;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -54,28 +55,57 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
 
 
+    //To get a handle to a preference file, and to read, write, and manage preference data, use the SharedPreferences class.
+    SharedPreferences mPreferences;
+    private String sharedPrefFile = "com.irynas.myapplication";
+
+    //keys to hold email, username and password in shared prefferences
+    private final String EMAIL_KEY = "email";
+    // Key for current color
+    private final String PASSWORD_KEY = "password";
 
 
-    // rewrite to Kotlin later
-    //Creating the lists of movie names
-    //String[] NAMES = {"Night of the Comet", "Dead Snow","Cemetery Man", "28 Weeks Later","Night of the Creeps", "ParaNorman","Zombieland", "Planet Terror", "Train to Busan"};
-    //method to your main activity that starts a new activity when the upper-left button is clicked,
+    /*
 
-    // if Google Play services is required for your app at all times, you might want to do it when your app first launches
-/*
-
-On the other hand, if Google Play services is an optional part of your app,
-you can check the version only once the user navigates to that portion of your app.
- */
+    * On the other hand, if Google Play services is an optional part of your app,
+    * you can check the version only once the user navigates to that portion of your app.
+    */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.app_bar);
         setSupportActionBar(toolbar);
         Log.i(TAG, "started onCreate");
 
+        mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+
+        mEmailField = (EditText)findViewById(R.id.email);
+        Log.i("Email field created", "created");
+
+        mPasswordField = (EditText)findViewById(R.id.password);
+        Log.i("Password field created", "created");
+
+        // retrieve user email and password values from shared prefferences
+        lastEmail = mPreferences.getString(EMAIL_KEY, "");
+        lastPassword = mPreferences.getString(PASSWORD_KEY, "");
+
+        // Update the value of the main TextView with the new count.
+        mEmailField.setText(lastEmail);
+        mPasswordField.setText(lastPassword);
+
+
+
+
+
         FirebaseApp.initializeApp(this);
+
+
+        //In the onCreate() method, initialize the shared preferences.
+        //opens the file at the given filename (sharedPrefFile) with the mode MODE_PRIVATE
+        // mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        Log.i("mPreferenc initialized", " successfully");
 
 
 
@@ -127,18 +157,16 @@ you can check the version only once the user navigates to that portion of your a
          * if all entries are valid, navigate to a new activity called Team.
          * You can use this activityPreview the document & layoutPreview the document as starting points
          */
-        mEmailField = (EditText)findViewById(R.id.email);
 
-        mPasswordField = (EditText)findViewById(R.id.password);
         //set last remembered email password in the field
         //Fetching last stored email and password from the database
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userEmail = user.getEmail();
+        //String userEmail = user.getEmail();
         //String userPassword = user.getPassword();
 
-        mEmailField.setText(userEmail);
-        mPasswordField.setText(lastPassword);
+        //mEmailField.setText(userEmail);
+        //mPasswordField.setText(lastPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -165,6 +193,15 @@ you can check the version only once the user navigates to that portion of your a
 
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
+
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        //adding the last used email and password to the shared prefferences
+        preferencesEditor.putString(EMAIL_KEY, email);
+        Log.d("EMAAIL", "ADDED TO SHARED PREFFERENCES");
+        preferencesEditor.putString(PASSWORD_KEY, password);
+
+        //Call apply() to save the preferences - saves the preferences asynchronously, off of the UI thread
+        preferencesEditor.apply();
 
         //validate form here
 
@@ -288,5 +325,25 @@ you can check the version only once the user navigates to that portion of your a
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * You save the data in the onPause() lifecycle callback, and you need a shared editor object (SharedPreferences.Editor)
+     * to write to the shared preferences object.
+     */
 
+    /*
+    @Override
+    protected void onPause(){
+        super.onPause();
+        // A shared preferences editor is required to write to the shared preferences object.
+        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
+        //adding the last used email and password to the shared prefferences
+        preferencesEditor.putString(EMAIL_KEY, lastEmail);
+        Log.d("EMAAIL", "ADDED TO SHARED PREFFERENCES");
+        preferencesEditor.putString(PASSWORD_KEY, lastPassword);
+
+        //Call apply() to save the preferences - saves the preferences asynchronously, off of the UI thread
+        preferencesEditor.apply();
+    }
+
+    */
 }
