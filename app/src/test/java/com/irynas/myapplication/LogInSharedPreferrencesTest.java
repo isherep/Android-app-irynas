@@ -24,21 +24,61 @@ public class LogInSharedPreferrencesTest {
 
     private MainActivity mainActivity = new MainActivity();
 
+
     final SharedPreferences sharedPrefs = Mockito.mock(SharedPreferences.class);
+
 
     @Mock
     SharedPreferences mockPreferences;
+    @Mock
+    SharedPreferences.Editor mockEditor;
 
+
+
+    private SharedPreferencesHelper mockHelper;
+    private String text_entry = "text";
+
+
+    @Before
+    public void initMocks(){
+        mockHelper = createMockSharedPreference();
+    }
+
+    /**
+     * Tests if the input was successfully stored and retrieves data in shared preferences
+     */
     @Test
     public void validateInputStoringInPreferences(){
 
+        boolean success = mockHelper.saveEntry(text_entry);
+
+        assertThat("SharedPreferenceEntry.save... returns true", success, is(true));
+        //assertEquals(text_entry, mockHelper.getEntry());
     }
 
 
+    @Test
     public void validateInputRetrievesFromPreferences(){
+        assertEquals(text_entry, mockHelper.getEntry());
 
     }
 
+
+    //create method
+    private SharedPreferencesHelper createMockSharedPreference(){
+
+        when(mockPreferences.getString(eq("text_entry"), anyString()))
+            .thenReturn(text_entry);
+
+        //mocking successful commit
+        when(mockEditor.commit()).thenReturn(true);
+
+        //Return an editor per request
+        when(mockPreferences.edit()).thenReturn(mockEditor);
+         //return new helper object based on mock preference
+        return new SharedPreferencesHelper(mockPreferences);
+
+    }
 
 
 
