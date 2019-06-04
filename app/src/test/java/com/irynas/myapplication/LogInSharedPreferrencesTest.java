@@ -1,37 +1,45 @@
 package com.irynas.myapplication;
 
-import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.*;
-import com.irynas.myapplication.MainActivity;
-
+import static junit.framework.Assert.assertEquals;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
+import static org.mockito.Mockito.*;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import com.irynas.myapplication.SharedPreferencesHelper;
 /**
- * Verifyes text-entry validation logic correctly handles success & error conditions,
+ * Verify your application correctly reads from / writes to shared preferences
  */
+@RunWith(MockitoJUnitRunner.class)
 public class LogInSharedPreferrencesTest {
-    public class ValidEntryUnitTest {
-        private MainActivity mainActivity = new MainActivity();
 
-        @Test
-        public void shoudReturnTrueIfValidInput() {
-            assertThat(mainActivity.validate("chowder", "bread"), is(true));
-        }
+    private MainActivity mainActivity = new MainActivity();
 
-        @Test
-        public void shoudReturnFalseIfEmailEmpty() {
-            assertThat(mainActivity.validate("", "bread"), is(false));
-        }
+    final SharedPreferences sharedPrefs = Mockito.mock(SharedPreferences.class);
 
-        @Test
-        public void shoudReturnFalseIfPasswordEmpty() {
-            assertThat(mainActivity.validate("bread", ""), is(false));
-        }
+    @Mock
+    SharedPreferences mockPreferences;
 
-        @Test
-        public void shoudReturnFalseIfInputNotValid() {
-            assertThat(mainActivity.validate("12345", "1111111"), is(false));
-        }
+    @Test
+    public void validateInputStoringInPreferences(){
+
     }
+
+
+    public void validateInputRetrievesFromPreferences(){
+
+    }
+
+
+
+
 
 }
