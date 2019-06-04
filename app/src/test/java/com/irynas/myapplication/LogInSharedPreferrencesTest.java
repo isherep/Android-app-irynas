@@ -19,6 +19,7 @@ import com.irynas.myapplication.SharedPreferencesHelper;
  * Verify your application correctly reads from / writes to shared preferences
  */
 @RunWith(MockitoJUnitRunner.class)
+
 public class LogInSharedPreferrencesTest {
 
     private MainActivity mainActivity = new MainActivity();

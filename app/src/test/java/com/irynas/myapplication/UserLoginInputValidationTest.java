@@ -1,8 +1,8 @@
 package com.irynas.myapplication;
 
 import android.content.Context;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.runner.AndroidJUnit4;
+//import android.support.test.InstrumentationRegistry;
+//import android.support.test.runner.JUnit4;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,11 +16,12 @@ import static org.junit.Assert.*;
 import com.irynas.myapplication.MainActivity;
 
 import org.junit.Test;
+import org.junit.runners.JUnit4;
 
 /**
  * Verifyes text-entry validation logic correctly handles success & error conditions,
  */
-@RunWith(AndroidJUnit4.class)
+@RunWith(JUnit4.class)
 public class UserLoginInputValidationTest {
     private MainActivity mainActivity = new MainActivity();
 
@@ -43,4 +44,6 @@ public class UserLoginInputValidationTest {
     public void shoudReturnFalseIfInputNotValid() {
         assertThat(mainActivity.validate("12345", "1111111"), is(false));
     }
+
+
 }

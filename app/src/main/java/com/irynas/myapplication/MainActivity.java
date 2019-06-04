@@ -209,7 +209,8 @@ public class MainActivity extends AppCompatActivity {
         boolean isValid = validate(email, password);
         if (isValid) {
             //turning the entered info from email and passowd fields into variables
-
+            lastPassword = mPasswordField.getText().toString();
+            lastEmail = mEmailField.getText().toString();
             // sign into Firebase project
             //FirebaseApp.initializeApp(getApplicationContext());
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -248,6 +249,10 @@ public class MainActivity extends AppCompatActivity {
                         }
 
                     });
+        } else {
+            //set the error
+            mEmailField.setError("Required");
+            mPasswordField.setError("Required");
         }
     }
 
@@ -256,25 +261,18 @@ public class MainActivity extends AppCompatActivity {
      * @return
      */
     public boolean validate(String email, String password){
-        boolean result = true;
-        if (TextUtils.isEmpty(email)) {
-            mEmailField.setError("Required");
-            result = false;
+       // boolean result = true;
 
-        } else {
-            mEmailField.setError(null);
-            lastEmail = mEmailField.getText().toString();
+        if (email.length() == 0 || password.length() == 0) {
+
+            //mEmailField.setError("Required");
+            return  false;
         }
 
-        if (TextUtils.isEmpty(password)) {
-            mPasswordField.setError("Required");
-            result = false;
 
-        } else {
-            mPasswordField.setError(null);
-            lastPassword = mPasswordField.getText().toString();
-        }
-        return result;
+        return true;
+
+
     }
 
     @Override
