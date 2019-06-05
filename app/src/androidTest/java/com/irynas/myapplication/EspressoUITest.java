@@ -48,13 +48,15 @@ public class EspressoUITest {
     when I should have been using import androidx.test.runner.AndroidJUnit4;
      */
     @Test
-    public void changeText_sameActivity() {
-        // Type text and then press the button.
+    public void changeUsernamePasswordAndLoginButton() {
+        // Testing email field.
         onView(withId(R.id.email))
-                .perform((ViewAction) typeText(stringToBetyped));
+                .perform(typeText(stringToBetyped), closeSoftKeyboard());
+
+        //testing button
         onView(withId(R.id.login)).perform((ViewAction) click());
 
-        // Check that the text was changed.
+        // Testing password field.
         onView(withId(R.id.password))
                 .perform((ViewAction) typeText(passwordToBetyped))
                 .check(matches(withText(passwordToBetyped)));
