@@ -28,6 +28,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withId;
 public class EspressoUITest {
 
     private String stringToBetyped;
+    private String passwordToBetyped;
 
     @Rule
     public ActivityTestRule<MainActivity> activityRule
@@ -36,7 +37,8 @@ public class EspressoUITest {
     @Before
     public void initValidString() {
         // Specify a valid string.
-        stringToBetyped = "iryna.sherepot@gmail.com";
+        stringToBetyped = "espresso";
+        passwordToBetyped = "123";
     }
 
     /*
@@ -54,7 +56,8 @@ public class EspressoUITest {
 
         // Check that the text was changed.
         onView(withId(R.id.password))
-                .check(matches(withText(stringToBetyped)));
+                .perform((ViewAction) typeText(passwordToBetyped))
+                .check(matches(withText(passwordToBetyped)));
     }
 
 
