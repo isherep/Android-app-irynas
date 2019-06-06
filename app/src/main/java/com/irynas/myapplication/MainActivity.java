@@ -30,10 +30,12 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 
 import org.w3c.dom.Text;
 
@@ -44,22 +46,27 @@ public class MainActivity extends AppCompatActivity {
     private static boolean WIFIconnected = false;
     private static boolean mobileConnected = false;
 
+    private EditText mNameField;
     private EditText mEmailField;
     private EditText mPasswordField;
 
+    private String lastName;
     private String lastEmail;
     private String lastPassword;
 
     private static final String TAG = "Main Activity";
-    private static final String NAME = "AD340 - IRYNA";
+
+    private String name; // "AD340 - IRYNA";
     private ProgressBar progressBar;
 
+    // private DatabaseReference mFirebaseDatabase;
 
     //To get a handle to a preference file, and to read, write, and manage preference data, use the SharedPreferences class.
     SharedPreferences mPreferences;
     private String sharedPrefFile = "com.irynas.myapplication";
 
-    //keys to hold email, username and password in shared prefferences
+    //keys to hold email, username and password in shared preferences
+    private final String NAME_KEY = "name";
     private final String EMAIL_KEY = "email";
     // Key for current color
     private final String PASSWORD_KEY = "password";
@@ -80,6 +87,9 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "started onCreate");
 
         mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
+        //assign entry fields to variables
+        mNameField = (EditText)findViewById(R.id.name);
+        Log.i("Name field created", "created");
 
         mEmailField = (EditText)findViewById(R.id.email);
         Log.i("Email field created", "created");
@@ -88,17 +98,16 @@ public class MainActivity extends AppCompatActivity {
         Log.i("Password field created", "created");
 
         // retrieve user email and password values from shared prefferences
+        lastName = mPreferences.getString(NAME_KEY, "");
         lastEmail = mPreferences.getString(EMAIL_KEY, "");
         lastPassword = mPreferences.getString(PASSWORD_KEY, "");
 
         // Update the value of the main TextView with the new count.
+        mNameField.setText(lastName);
         mEmailField.setText(lastEmail);
         mPasswordField.setText(lastPassword);
 
-
-
-
-
+        // initializing Firebase
         FirebaseApp.initializeApp(this);
 
 
@@ -106,8 +115,6 @@ public class MainActivity extends AppCompatActivity {
         //opens the file at the given filename (sharedPrefFile) with the mode MODE_PRIVATE
         // mPreferences = getSharedPreferences(sharedPrefFile, MODE_PRIVATE);
         Log.i("mPreferenc initialized", " successfully");
-
-
 
        Button button2 = (Button) findViewById(R.id.button2);
 
@@ -149,37 +156,18 @@ public class MainActivity extends AppCompatActivity {
         Button loginButton = (Button)findViewById(R.id.login);
         //When the Login button is clicked;
 
-        /**
-         * When the Login button is clicked;
-         * Validate the each text-field is non-empty
-         * Prevent navigation & show a warning if any fields are invalid,
-         * Store valid user-entered text to shared preferences
-         * if all entries are valid, navigate to a new activity called Team.
-         * You can use this activityPreview the document & layoutPreview the document as starting points
-         */
-
         //set last remembered email password in the field
         //Fetching last stored email and password from the database
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        //String userEmail = user.getEmail();
-        //String userPassword = user.getPassword();
-
-        //mEmailField.setText(userEmail);
-        //mPasswordField.setText(lastPassword);
 
         loginButton.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
                 signIn();
-                //Attempt to invoke virtual method 'android.text.Editable android.widget.EditText.getText()' on a null object reference
-
-               // Intent intent = new Intent(getApplicationContext(), TeamActivity.class);
-                //startActivity(intent);
             }
         });
-
 
     }
 
@@ -190,29 +178,33 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "signIn");
 
+        // loading entered infomation in each input field to variables
+        final String name = mNameField.getText().toString();
 
         String email = mEmailField.getText().toString();
         String password = mPasswordField.getText().toString();
 
+        //initializig the shared preferences editor to enter the variables
         SharedPreferences.Editor preferencesEditor = mPreferences.edit();
         //adding the last used email and password to the shared prefferences
+        preferencesEditor.putString(NAME_KEY, name);
         preferencesEditor.putString(EMAIL_KEY, email);
-        Log.d("EMAAIL", "ADDED TO SHARED PREFFERENCES");
+        Log.d("EMAIL", "ADDED TO SHARED PREFFERENCES");
         preferencesEditor.putString(PASSWORD_KEY, password);
 
         //Call apply() to save the preferences - saves the preferences asynchronously, off of the UI thread
         preferencesEditor.apply();
 
         //validate form here
+        boolean isValid = validate(name, email, password);
 
-
-        boolean isValid = validate(email, password);
         if (isValid) {
+           // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             //turning the entered info from email and passowd fields into variables
+            //lastName = mPasswordField.getText().toString();
             lastPassword = mPasswordField.getText().toString();
             lastEmail = mEmailField.getText().toString();
             // sign into Firebase project
-            //FirebaseApp.initializeApp(getApplicationContext());
             FirebaseAuth mAuth = FirebaseAuth.getInstance();
             mAuth.signInWithEmailAndPassword(email, password)
                     .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -223,9 +215,17 @@ public class MainActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 // update profile
                                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                // FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                // retrieving user's name and email from the firebase
+                                //String userEmail = user.getEmail();
+                                //String name = user.getDisplayName();
 
+                                //user.updateEmail(lastEmail);
+
+
+                                //Log.i("Firebase username ", userEmail);
                                 UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
-                                        .setDisplayName(NAME)
+                                        .setDisplayName(name)
                                         .build();
 
                                 user.updateProfile(profileUpdates)
@@ -251,6 +251,7 @@ public class MainActivity extends AppCompatActivity {
                     });
         } else {
             //set the error
+            mNameField.setText("Required");
             mEmailField.setError("Required");
             mPasswordField.setError("Required");
         }
@@ -260,21 +261,55 @@ public class MainActivity extends AppCompatActivity {
      * Validates information in the email and password fields
      * @return
      */
-    public boolean validate(String email, String password){
+    public boolean validate(String name, String email, String password){
        // boolean result = true;
 
-        if (email.length() == 0 || password.length() == 0) {
+        if (name.length() == 0 || email.length() == 0 || password.length() == 0) {
 
             //mEmailField.setError("Required");
             return  false;
         }
 
-
         return true;
-
-
     }
 
+    /**
+     * Stores entered name and username in the Firebase
+     * @param
+     * @return
+     */
+    /*
+    private void onAuthSuccess(FirebaseUser user) {
+
+
+        //String username = usernameFromEmail(user.getEmail());
+
+        // Write new user	        if (TextUtils.isEmpty(password)) {
+        writeNewUser(name, lastEmail);
+
+        finish();
+        }
+
+    }
+    */
+/*
+    private String usernameFromEmail(String email) {
+        if (email.contains("@")) {
+            return email.split("@")[0];
+        } else {
+            return email;
+        }
+    }
+    */
+/*
+
+    private void writeNewUser(String name, String email) {
+        User user = new TeamActivity.User(name, email);
+
+        mFirebaseDatabase.child("Users").child(userId).setValue(user);
+    }
+
+*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -290,12 +325,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        //int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-       // if (id == R.id.action_settings) {
-            //return true;
-       // }
         switch(item.getItemId()){
             case R.id.list_settings:
                 Intent list = new Intent(this, ListViewItemsActivity.class);
@@ -328,20 +358,4 @@ public class MainActivity extends AppCompatActivity {
      * to write to the shared preferences object.
      */
 
-    /*
-    @Override
-    protected void onPause(){
-        super.onPause();
-        // A shared preferences editor is required to write to the shared preferences object.
-        SharedPreferences.Editor preferencesEditor = mPreferences.edit();
-        //adding the last used email and password to the shared prefferences
-        preferencesEditor.putString(EMAIL_KEY, lastEmail);
-        Log.d("EMAAIL", "ADDED TO SHARED PREFFERENCES");
-        preferencesEditor.putString(PASSWORD_KEY, lastPassword);
-
-        //Call apply() to save the preferences - saves the preferences asynchronously, off of the UI thread
-        preferencesEditor.apply();
-    }
-
-    */
 }
