@@ -27,22 +27,22 @@ public class UserLoginInputValidationTest {
 
     @Test
     public void shoudReturnTrueIfValidInput() {
-        assertThat(mainActivity.validate("chowder", "bread"), is(true));
+        assertThat(mainActivity.validate("chowder", "bread", "crab"), is(true));
     }
 
     @Test
     public void shoudReturnFalseIfEmailEmpty() {
-        assertThat(mainActivity.validate("", "bread"), is(false));
+        assertThat(mainActivity.validate("bread", "", "joeshmoe"), is(false));
     }
 
     @Test
     public void shoudReturnFalseIfPasswordEmpty() {
-        assertThat(mainActivity.validate("bread", ""), is(false));
+        assertThat(mainActivity.validate("bread", "", "salad"), is(false));
     }
 
     @Test
-    public void shoudReturnFalseIfInputNotValid() {
-        assertThat(mainActivity.validate("12345", "1111111"), is(false));
+    public void shoudReturnFalseIfNameEmpty() {
+        assertThat(mainActivity.validate("", "joeshmoe@gmail.com", "salad"), is(false));
     }
 
 
