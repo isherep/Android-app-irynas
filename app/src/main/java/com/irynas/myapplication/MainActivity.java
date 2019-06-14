@@ -273,41 +273,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    /**
-     * Stores entered name and username in the Firebase
-     * @param
-     * @return
-     */
-    /*
-    private void onAuthSuccess(FirebaseUser user) {
-
-
-        //String username = usernameFromEmail(user.getEmail());
-
-        // Write new user	        if (TextUtils.isEmpty(password)) {
-        writeNewUser(name, lastEmail);
-
-        finish();
-        }
-
-    }
-    */
-/*
-    private String usernameFromEmail(String email) {
-        if (email.contains("@")) {
-            return email.split("@")[0];
-        } else {
-            return email;
-        }
-    }
-    */
-/*
-
-    private void writeNewUser(String name, String email) {
-        User user = new TeamActivity.User(name, email);
-
-        mFirebaseDatabase.child("Users").child(userId).setValue(user);
-    }
+   
 
 */
     @Override
