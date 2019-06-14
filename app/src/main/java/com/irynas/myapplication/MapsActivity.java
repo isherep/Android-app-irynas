@@ -223,11 +223,11 @@ public void loadCameras(){
 
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
 
-        Gson gson = new Gson();
-        Type type = new TypeToken<List<TrafficCam>>() {
-        }.getType();
-        List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
-
+        //Gson gson = new Gson();
+        //Type type = new TypeToken<List<TrafficCam>>() {
+        //}.getType();
+        //List<TrafficCam> camsList = gson.fromJson(camsListAsString, type);
+/*
         for (TrafficCam cams : camsList) {
             Log.i("Data", cams.getLabel());
 
@@ -239,7 +239,7 @@ public void loadCameras(){
             m.setTag(cams);
         }
 
-
+*/
         for(TrafficCam camera: cams){
             Log.i("CAMERA DATA", camera.toString());
            LatLng position = new LatLng(camera.getCoords()[0], camera.getCoords()[1]);
@@ -274,9 +274,7 @@ public void loadCameras(){
         if (locationPermissionGranted) {
             getDeviceLocation();
             loadCameras();
-            showCameraMarkers();
-            //getLocationPermission();
-
+           
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
