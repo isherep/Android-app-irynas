@@ -218,7 +218,9 @@ public void loadCameras(){
     public void showCameraMarkers() {
 
         Log.i("CAMERA DATA", cams.toString());
-        /*
+
+        //This is not needed if redirected from the main activity
+
         String camsListAsString = getIntent().getStringExtra("cameras_as_string");
 
         Gson gson = new Gson();
@@ -236,7 +238,7 @@ public void loadCameras(){
 
             m.setTag(cams);
         }
-        */
+
 
         for(TrafficCam camera: cams){
             Log.i("CAMERA DATA", camera.toString());
