@@ -11,7 +11,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -84,6 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         getLocationPermission();
         //loadCameras();
         //showCameraMarkers();
+
+        Toolbar toolbar = findViewById(R.id.app_bar);
+
     }
     //------------Getting location--------------------
 
@@ -274,7 +282,7 @@ public void loadCameras(){
         if (locationPermissionGranted) {
             getDeviceLocation();
             loadCameras();
-           
+
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 // TODO: Consider calling
                 //    ActivityCompat#requestPermissions
@@ -289,6 +297,16 @@ public void loadCameras(){
         }
         mMap.setMyLocationEnabled(true);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        // getMenuInflater().inflate(R.menu.menu_main, menu);
+        //return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 }

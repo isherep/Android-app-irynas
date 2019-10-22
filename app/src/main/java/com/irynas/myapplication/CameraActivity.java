@@ -14,6 +14,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -324,6 +326,16 @@ public class CameraActivity extends AppCompatActivity {
         String jsonCams = gson.toJson(cams);
         intent.putExtra("cameras_as_string", jsonCams);
         startActivity(intent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        // getMenuInflater().inflate(R.menu.menu_main, menu);
+        //return true;
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
 }
