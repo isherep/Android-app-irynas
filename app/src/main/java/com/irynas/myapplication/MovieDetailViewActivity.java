@@ -1,7 +1,9 @@
 package com.irynas.myapplication;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -44,6 +46,13 @@ public class MovieDetailViewActivity extends AppCompatActivity {
         description.setText(DescReceived);
         //setting image URL
         Picasso.get().load(ImageUrlReceived).into(image);
+
+        Toolbar toolbar = findViewById(R.id.app_bar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("About");
+
+        ActionBar ab = getSupportActionBar();
+        ab.setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
