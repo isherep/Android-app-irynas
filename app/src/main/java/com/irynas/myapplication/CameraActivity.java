@@ -1,18 +1,16 @@
 package com.irynas.myapplication;
 
-import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Camera;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
+
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,29 +21,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
-import com.android.volley.ParseError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.StringRequest;
 //import com.google.android.gms.common.api.Response;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.VolleyError;
 
 import com.android.volley.toolbox.Volley;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
 
-import com.google.android.gms.location.LocationListener;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -54,7 +38,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.jar.JarException;
+
 import com.google.gson.Gson;
 
 

@@ -8,8 +8,8 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.4.0'
-        classpath 'com.google.gms:google-services:4.0.0'
+        classpath 'com.android.tools.build:gradle:3.6.1'
+        classpath 'com.google.gms:google-services:4.3.3'
         //testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         // required if you want to use Mockito for Android tests
         //androidTestCompile 'org.mockito:mockito-android:2.7.22'

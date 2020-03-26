@@ -1,16 +1,12 @@
 package com.irynas.myapplication;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.support.v7.widget.Toolbar;
 
-import com.squareup.picasso.Picasso;
+import androidx.appcompat.widget.Toolbar;
 
 public class NoNetworkConnection extends AppCompatActivity {
 

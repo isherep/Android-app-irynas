@@ -8,7 +8,7 @@
     <String name="button_documentary">Documentary</String>-->
     <string name="edit_message">Please enter the movie name</string>
     <string name="search_button">Search</string>
-    <string name="button_comedy">Comedy</string>
+    <string name="button_comedy">Horror Movies</string>
     <string name="button_drama">Drama</string>
     <string name="button_action">Action</string>
     <string name="button_documentary">Documentary</string>
